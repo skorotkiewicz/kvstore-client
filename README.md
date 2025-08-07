@@ -1,4 +1,4 @@
-# @skorotkiewicz/kvstore-client
+# kvstore-client
 
 A TypeScript/JavaScript client library for managing key-value storage operations through REST API. This library provides a comprehensive interface for interacting with remote key-value stores, including user management, database operations, and CRUD operations.
 
@@ -15,13 +15,13 @@ A TypeScript/JavaScript client library for managing key-value storage operations
 ## Installation
 
 ```bash
-npm install @skorotkiewicz/kvstore-client
+npm install kvstore-client
 ```
 
 ## Quick Start
 
 ```typescript
-import { KVStore } from '@skorotkiewicz/kvstore-client';
+import { KVStore } from 'kvstore-client';
 
 // Initialize the client
 const store = new KVStore('https://your-api-endpoint.com/connect', {
@@ -196,7 +196,7 @@ await store.deleteAccount('password123', 'DELETE'); // ⚠️ This cannot be und
 For backward compatibility, you can also use the factory function:
 
 ```typescript
-import { store } from '@skorotkiewicz/kvstore-client';
+import { store } from 'kvstore-client';
 
 const kvStore = store('https://api.example.com/connect', {
   accessToken: 'token',
