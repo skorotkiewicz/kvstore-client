@@ -15,13 +15,13 @@ A TypeScript/JavaScript client library for managing key-value storage operations
 ## Installation
 
 ```bash
-npm install kvstore-client
+npm install @skorotkiewicz/kvstore-client
 ```
 
 ## Quick Start
 
 ```typescript
-import { KVStore } from 'kvstore-client';
+import { KVStore } from '@skorotkiewicz/kvstore-client';
 
 // Initialize the client
 const store = new KVStore('https://your-api-endpoint.com/connect', {
@@ -179,12 +179,24 @@ const entries = await store.entries('database-name', 'store-name');
 await store.clear(); // ⚠️ This cannot be undone
 ```
 
+### Account Management
+
+#### Change password
+```typescript
+await store.changePassword('currentPassword123', 'newSecurePassword456');
+```
+
+#### Delete account
+```typescript
+await store.deleteAccount('password123', 'DELETE'); // ⚠️ This cannot be undone
+```
+
 ## Factory Function (Legacy)
 
 For backward compatibility, you can also use the factory function:
 
 ```typescript
-import { store } from 'kvstore-client';
+import { store } from '@skorotkiewicz/kvstore-client';
 
 const kvStore = store('https://api.example.com/connect', {
   accessToken: 'token',
@@ -202,6 +214,19 @@ interface KVStoreOptions {
   accessToken: string;
   storeName: string;
   dbName: string;
+}
+
+interface RegisterFormData {
+  username: string;
+  email: string;
+  password: string;
+  [key: string]: any;
+}
+
+interface LoginFormData {
+  username: string;
+  password: string;
+  [key: string]: any;
 }
 
 interface KVEntry {
