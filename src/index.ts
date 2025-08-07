@@ -385,6 +385,38 @@ export class KVStore {
   async deleteDatabase(dbName: string): Promise<APIResponse> {
     return await this._request("delete-database", { dbName });
   }
+
+  /**
+   * Changes the current user's password
+   *
+   * @param currentPassword - The current password of the user
+   * @param newPassword - The new password to set
+   * @returns Promise resolving to password change response
+   */
+  async changePassword(
+    currentPassword: string,
+    newPassword: string,
+  ): Promise<APIResponse> {
+    return await this._request("change-password", {
+      currentPassword,
+      newPassword,
+    });
+  }
+
+  /**
+   * Permanently deletes the user account
+   *
+   * @param password - The user's password for confirmation
+   * @param confirmation - A confirmation string, e.g. "DELETE"
+   * @returns Promise resolving to account deletion response
+   * @warning This action is irreversible and deletes all user data
+   */
+  async deleteAccount(
+    password: string,
+    confirmation: string,
+  ): Promise<APIResponse> {
+    return await this._request("delete-account", { password, confirmation });
+  }
 }
 
 /**

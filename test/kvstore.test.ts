@@ -643,6 +643,113 @@ describe("KVStore", () => {
       );
     });
   });
+
+  describe("changePassword", () => {
+    it("should call _request with change-password action", async () => {
+      const mockResponse = {
+        success: true,
+        message: "Password changed successfully",
+      };
+      mockFetch.mockResolvedValueOnce({
+        ok: true,
+        json: () => Promise.resolve(mockResponse),
+      });
+
+      const result = await kvStore.changePassword(
+        "currentpass123",
+        "newpass456",
+      );
+
+      expect(result).toEqual(mockResponse);
+      expect(mockFetch).toHaveBeenCalledWith(
+        apiUrl,
+        expect.objectContaining({
+          body: JSON.stringify({
+            action: "change-password",
+            dbName: options.dbName,
+            storeName: options.storeName,
+            currentPassword: "currentpass123",
+            newPassword: "newpass456",
+          }),
+        }),
+      );
+    });
+
+    it("should handle password change with different passwords", async () => {
+      const mockResponse = { success: true };
+      mockFetch.mockResolvedValueOnce({
+        ok: true,
+        json: () => Promise.resolve(mockResponse),
+      });
+
+      await kvStore.changePassword("old123", "new456");
+
+      expect(mockFetch).toHaveBeenCalledWith(
+        apiUrl,
+        expect.objectContaining({
+          body: JSON.stringify({
+            action: "change-password",
+            dbName: options.dbName,
+            storeName: options.storeName,
+            currentPassword: "old123",
+            newPassword: "new456",
+          }),
+        }),
+      );
+    });
+  });
+
+  describe("deleteAccount", () => {
+    it("should call _request with delete-account action", async () => {
+      const mockResponse = {
+        success: true,
+        message: "Account deleted successfully",
+      };
+      mockFetch.mockResolvedValueOnce({
+        ok: true,
+        json: () => Promise.resolve(mockResponse),
+      });
+
+      const result = await kvStore.deleteAccount("password123", "DELETE");
+
+      expect(result).toEqual(mockResponse);
+      expect(mockFetch).toHaveBeenCalledWith(
+        apiUrl,
+        expect.objectContaining({
+          body: JSON.stringify({
+            action: "delete-account",
+            dbName: options.dbName,
+            storeName: options.storeName,
+            password: "password123",
+            confirmation: "DELETE",
+          }),
+        }),
+      );
+    });
+
+    it("should handle account deletion with different confirmation text", async () => {
+      const mockResponse = { success: true };
+      mockFetch.mockResolvedValueOnce({
+        ok: true,
+        json: () => Promise.resolve(mockResponse),
+      });
+
+      await kvStore.deleteAccount("mypassword", "CONFIRM_DELETE");
+
+      expect(mockFetch).toHaveBeenCalledWith(
+        apiUrl,
+        expect.objectContaining({
+          body: JSON.stringify({
+            action: "delete-account",
+            dbName: options.dbName,
+            storeName: options.storeName,
+            password: "mypassword",
+            confirmation: "CONFIRM_DELETE",
+          }),
+        }),
+      );
+    });
+  });
 });
 
 describe("store factory function", () => {
